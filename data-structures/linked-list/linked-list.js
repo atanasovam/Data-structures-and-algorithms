@@ -2,19 +2,17 @@ const LinkedListNode = require('./node');
 
 class LinkedList {
     constructor() {
-        this.first = null;
-        this.last = null;
+        this.head = null;
+        this.tail = null;
         this.length = 0;
     }
 
     get _first() {
-        const first = this.first ? this.first.value : 'undefined';
-        return first;
+        return this.head ? this.head.value : 'undefined';
     }
 
     get _last() {
-        const last = this.last ? this.last.value : 'undefined';
-        return last;
+        return this.tail ? this.tail.value : 'undefined';
     }
 
     get _length() {
@@ -25,12 +23,12 @@ class LinkedList {
         arr.forEach((el, i) => {
             const newNode = new LinkedListNode(el);
 
-            if (this.length === 0 && this.first === null) {
-                this.first = newNode;
-                this.last = newNode;
+            if (this.length === 0 && this.head === null) {
+                this.head = newNode;
+                this.tail = newNode;
             } else {
-                this.last.next = newNode;
-                this.last = newNode;
+                this.tail.next = newNode;
+                this.tail = newNode;
             }
         });
 
@@ -41,21 +39,19 @@ class LinkedList {
         for (let i = arr.length - 1; i >= 0; i--) {
             const newNode = new LinkedListNode(arr[i]);
 
-            if (this._length === 0 && this.first === null) {
-                this.first = newNode;
-                this.last = newNode;
+            if (this._length === 0 && this.head === null) {
+                this.head = newNode;
+                this.tail = newNode;
             }
 
-            newNode.next = this.first;
-            this.first = newNode;
+            newNode.next = this.head;
+            this.head = newNode;
         }
 
         this.length += arr.length;
     }
 
-    insert(values) {
-        const [indx, arr] = Object.values(values);
-
+    insert(indx, arr) {
         if (!this.validateIndex(indx)) {
             throw new Error('Invalid index!');
         }
@@ -83,9 +79,9 @@ class LinkedList {
         let deletedNode;
 
         if (indx === 0) {
-            deletedNode = this.first;
+            deletedNode = this.head;
 
-            this.first = this.first.next;
+            this.head = this.head.next;
         } else {
             const nodeToReconnect = this.nodeAtIndex(indx - 1);
 
@@ -94,7 +90,7 @@ class LinkedList {
             nodeToReconnect.next = nodeToReconnect.next.next;
 
             if (indx === this.length - 1) {
-                this.last = nodeToReconnect;
+                this.tail = nodeToReconnect;
             }
         }
 
@@ -103,7 +99,7 @@ class LinkedList {
     }
 
     indexOf(node) {
-        let nodeToReturn = this.first;
+        let nodeToReturn = this.head;
         let nodeCounter = 0;
 
         while (nodeToReturn !== null) {
@@ -126,7 +122,7 @@ class LinkedList {
         let nodeToReturn = null;
 
         for (let i = 0; i < this.length; i++) {
-            nodeToReturn = (i === 0) ? this.first : nodeToReturn.next;
+            nodeToReturn = (i === 0) ? this.head : nodeToReturn.next;
 
             if (i === indx) {
                 break;
@@ -145,7 +141,7 @@ class LinkedList {
     }
 
     get print() {
-        let node = this.first;
+        let node = this.head;
 
         while (node) {
             console.log(node.value);

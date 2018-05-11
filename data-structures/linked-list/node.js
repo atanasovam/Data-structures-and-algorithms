@@ -6,4 +6,4 @@ class LinkedListNode {
 }
 
 
-module.exports =  LinkedListNode ;
+module.exports = LinkedListNode;
