@@ -80,6 +80,29 @@ class DoublyLinkedList {
         this.length += arr.length;
     }
 
+    get reverse() {
+        let node = this.tail;
+        this.head = node;
+
+        let pastPrev = node.prev;
+        let pastNext = node.next;
+
+        while (node) {
+            node.prev = pastNext;
+            node.next = pastPrev;
+
+            node = pastPrev;
+
+            if (node === null) {
+                this.tail = pastPrev;
+                return;
+            }
+
+            pastPrev = node.prev;
+            pastNext = node.next;
+        }
+    }
+
     indexOf(node) {
         let nodeToReturn = this.head;
         let nodeCounter = 0;
@@ -123,22 +146,28 @@ class DoublyLinkedList {
     }
 
     get print() {
+        const result = Array.from({ length: this.length });
+
         let node = this.head;
+        let nodeCount = 0;
 
         while (node) {
-            console.log(node.value);
+            result[nodeCount] = node.value;
+            nodeCount++;
 
             node = node.next;
         }
+
+        console.log(result.join(' '));
     }
 }
 
 const list = new DoublyLinkedList();
 
-list.append([+'1', +'6', +'3', +'8', +'4', +'67', +'20']);
-list.prepend([+'12', +'22']);
-list.insert(0, [+'67']);
+list.append([67, 12, 22, 1]);
+list.print;
 
-// console.log(list.indexOf(67));
+console.log('-'.repeat(10));
 
+list.reverse;
 list.print;
