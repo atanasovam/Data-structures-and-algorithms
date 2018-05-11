@@ -93,8 +93,10 @@ class DoublyLinkedList {
 
             node = pastPrev;
 
-            if (node === null) {
+            if (node.prev === null) {
                 this.tail = pastPrev;
+                pastPrev.next = null;
+
                 return;
             }
 
@@ -167,7 +169,13 @@ const list = new DoublyLinkedList();
 list.append([67, 12, 22, 1]);
 list.print;
 
+console.log(list.head.value);
+console.log(list.tail.value);
+
 console.log('-'.repeat(10));
 
 list.reverse;
 list.print;
+
+console.log(list.head.value);
+console.log(list.tail.value);
