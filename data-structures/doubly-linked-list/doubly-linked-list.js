@@ -2,26 +2,26 @@ const LinkedListNode = require('./list-node');
 
 class DoublyLinkedList {
     constructor() {
-        this.head = null;
-        this.tail = null;
-        this.count = 0;
+        this._head = null;
+        this._tail = null;
+        this._count = 0;
     }
 
     get first() {
-        return this.head ? this.head.value : 'undefined';
+        return this._head ? this._head.value : null;
     }
 
     get last() {
-        return this.tail ? this.tail.value : 'undefined';
+        return this._tail ? this._tail.value : null;
     }
 
     get length() {
-        return this.count;
+        return this._count;
     }
 
-    get reverse() {
-        let node = this.tail;
-        this.head = node;
+    reverse() {
+        let node = this._tail;
+        this._head = node;
 
         let pastPrev = node.prev;
         let pastNext = node.next;
@@ -33,7 +33,7 @@ class DoublyLinkedList {
             node = pastPrev;
 
             if (node.prev === null) {
-                this.tail = pastPrev;
+                this._tail = pastPrev;
                 pastPrev.next = null;
 
                 return;
@@ -44,10 +44,10 @@ class DoublyLinkedList {
         }
     }
 
-    get print() {
-        const result = Array.from({ length: this.count });
+    print() {
+        const result = Array.from({ length: this._count });
 
-        let node = this.head;
+        let node = this._head;
         let nodeCount = 0;
 
         while (node) {
@@ -61,61 +61,59 @@ class DoublyLinkedList {
     }
 
     append(valuesList) {
-        if (!valuesList.forEach) {
+        if (!Array.isArray(valuesList)) {
             throw new Error(`${valuesList} isn't array!`)
         }
 
         valuesList.forEach((el) => {
             const newNode = new LinkedListNode(el);
 
-            if (this.head === null) {
-                this.head = newNode;
-                this.tail = newNode;
+            if (this._head === null) {
+                this._head = newNode;
+                this._tail = newNode;
             } else {
-                newNode.prev = this.tail;
+                newNode.prev = this._tail;
 
-                this.tail.next = newNode;
-                this.tail = newNode;
+                this._tail.next = newNode;
+                this._tail = newNode;
             }
         });
 
-        this.count += valuesList.length;
+        this._count += valuesList.length;
     }
 
     prepend(valuesList) {
-        if (!valuesList.forEach) {
+        if (!Array.isArray(valuesList)) {
             throw new Error(`${valuesList} isn't array!`)
         }
 
         for (let i = valuesList.length - 1; i >= 0; i--) {
             const newNode = new LinkedListNode(valuesList[i]);
 
-            if (this.head === null) {
-                this.head = newNode;
-                this.tail = newNode;
+            if (this._head === null) {
+                this._head = newNode;
+                this._tail = newNode;
             } else {
-                newNode.next = this.head;
+                newNode.next = this._head;
 
-                this.head.prev = newNode;
-                this.head = newNode;
+                this._head.prev = newNode;
+                this._head = newNode;
             }
         }
 
-        this.count += valuesList.length;
+        this._count += valuesList.length;
     }
 
     insert(index, valuesList) {
-        if (typeof index !== 'number') {
-            throw new Error(`The index parameter for the insert method must be number!`);
-        } else if (index < 0 || index >= this.count) {
-            throw new Error(`Invalid index: ${index} when inserting in doubly linked list!`);
-        }
-
-        if (!valuesList.forEach) {
+        if (!Array.isArray(valuesList)) {
             throw new Error(`${valuesList} isn't array!`)
         }
 
-        if (this.head === null || index === this.count - 1) {
+        if (typeof index !== 'number' || index < 0 || index >= this._count) {
+            throw new Error(`Invalid index: ${index} when inserting in doubly linked list!`);
+        }
+
+        if (this._head === null || index === this._count - 1) {
             return this.append(valuesList);
         } else if (index === 0) {
             return this.prepend(valuesList);
@@ -133,15 +131,19 @@ class DoublyLinkedList {
             nodeToInsertAfter.next = newNode;
         });
 
-        this.count += valuesList.length;
+        this._count += valuesList.length;
     }
 
-    indexOf(node) {
-        let nodeToReturn = this.head;
+    indexOf(nodeVal) {
+        if (!nodeVal) {
+            throw new Error('Invalid node value!')
+        }
+
+        let nodeToReturn = this._head;
         let nodeCounter = 0;
 
         while (nodeToReturn !== null) {
-            if (node === nodeToReturn.value) {
+            if (nodeVal === nodeToReturn.value) {
                 break;
             }
 
@@ -155,14 +157,14 @@ class DoublyLinkedList {
     getNodeAtIndex(indx) {
         if (typeof index !== 'number') {
             throw new Error(`The index parameter for the insert method must be number!`);
-        } else if (index < 0 || index >= this.count) {
+        } else if (index < 0 || index >= this._count) {
             throw new Error(`Invalid index: ${index} when inserting in doubly linked list!`);
         }
 
         let nodeToReturn = null;
 
-        for (let i = 0; i < this.count; i++) {
-            nodeToReturn = (i === 0) ? this.head : nodeToReturn.next;
+        for (let i = 0; i < this._count; i++) {
+            nodeToReturn = (i === 0) ? this._head : nodeToReturn.next;
 
             if (i === indx) {
                 break;
@@ -176,9 +178,9 @@ class DoublyLinkedList {
 const list = new DoublyLinkedList();
 
 list.append([67, 12, 22, 1]);
-list.print;
+list.print();
 
 console.log('-'.repeat(10));
 
-list.reverse;
-list.print;
+list.reverse();
+list.print();
