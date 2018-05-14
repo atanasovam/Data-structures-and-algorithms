@@ -1,26 +1,63 @@
-const LinkedListNode = require('./node');
+const LinkedListNode = require('./list-node');
 
 class LinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
-        this.length = 0;
+        this.count = 0;
     }
 
-    get _first() {
+    get first() {
         return this.head ? this.head.value : 'undefined';
     }
 
-    get _last() {
+    get last() {
         return this.tail ? this.tail.value : 'undefined';
     }
 
-    get _length() {
-        return this.length;
+    get length() {
+        return this.count;
     }
 
-    append(arr) {
-        arr.forEach((el, i) => {
+    get reverse() {
+        let node = this.head.next;
+        let oldNext;
+
+        this.tail = this.head;
+        this.tail.next = null;
+
+        while (node) {
+            oldNext = node.next;
+
+            node.next = this.head;
+            this.head = node;
+
+            node = oldNext;
+        }
+    }
+
+    get print() {
+        const result = Array.from({ length: this.count });
+
+        let node = this.head;
+        let nodeCount = 0;
+
+        while (node) {
+            result[nodeCount] = node.value;
+            nodeCount++;
+
+            node = node.next;
+        }
+
+        console.log(result.join(' '));
+    }
+
+    append(valuesList) {
+        if (!valuesList.forEach) {
+            throw new Error(`${valuesList} isn't array!`)
+        }
+
+        valuesList.forEach((el, i) => {
             const newNode = new LinkedListNode(el);
 
             if (this.length === 0 && this.head === null) {
@@ -32,14 +69,18 @@ class LinkedList {
             }
         });
 
-        this.length += arr.length;
+        this.count += valuesList.length;
     }
 
-    prepend(arr) {
-        for (let i = arr.length - 1; i >= 0; i--) {
-            const newNode = new LinkedListNode(arr[i]);
+    prepend(valuesList) {
+        if (!valuesList.forEach) {
+            throw new Error(`${valuesList} isn't array!`)
+        }
 
-            if (this._length === 0 && this.head === null) {
+        for (let i = valuesList.length - 1; i >= 0; i--) {
+            const newNode = new LinkedListNode(valuesList[i]);
+
+            if (this.count === 0 && this.head === null) {
                 this.head = newNode;
                 this.tail = newNode;
             }
@@ -48,17 +89,24 @@ class LinkedList {
             this.head = newNode;
         }
 
-        this.length += arr.length;
+        this.count += valuesList.length;
     }
 
-    insert(indx, arr) {
-        if (!this.validateIndex(indx)) {
-            throw new Error('Invalid index!');
+    insert(index, valuesList) {
+        if (typeof index !== 'number') {
+            throw new Error(`The index parameter for the insert method must be number!`);
+        } else if (index < 0 || index >= this.count) {
+            throw new Error(`Invalid index: ${index} when inserting in doubly linked list!`);
         }
 
-        let nodeToInsertAfter = this.nodeAtIndex(indx - 1);
+        if (!valuesList.forEach) {
+            throw new Error(`${valuesList} isn't array!`)
+        }
 
-        arr.forEach((el, i) => {
+
+        let nodeToInsertAfter = this.getNodeAtIndex(index - 1);
+
+        valuesList.forEach((el, i) => {
             const newNode = new LinkedListNode(el);
 
             newNode.next = nodeToInsertAfter.next;
@@ -67,34 +115,34 @@ class LinkedList {
             nodeToInsertAfter = newNode;
         });
 
-        this.length += arr.length;
+        this.count += valuesList.length;
     }
 
-    removeAt(indx) {
-        console.log(this.validateIndex(indx));
-        if (!this.validateIndex(indx)) {
-            throw new Error('Invalid index!');
+    removeAt(index) {
+        if (typeof index !== 'number') {
+            throw new Error(`The index parameter for the insert method must be number!`);
+        } else if (index < 0 || index >= this.count) {
+            throw new Error(`Invalid index: ${index} when inserting in doubly linked list!`);
         }
 
         let deletedNode;
 
-        if (indx === 0) {
+        if (index === 0) {
             deletedNode = this.head;
 
             this.head = this.head.next;
         } else {
-            const nodeToReconnect = this.nodeAtIndex(indx - 1);
+            const nodeToReconnect = this.getNodeAtIndex(index - 1);
 
-            console.log(nodeToReconnect);
             deletedNode = nodeToReconnect.next;
             nodeToReconnect.next = nodeToReconnect.next.next;
 
-            if (indx === this.length - 1) {
+            if (index === this.count - 1) {
                 this.tail = nodeToReconnect;
             }
         }
 
-        this.length--;
+        this.count--;
         return deletedNode;
     }
 
@@ -114,14 +162,16 @@ class LinkedList {
         return nodeCounter;
     }
 
-    nodeAtIndex(indx) {
-        if (!this.validateIndex(indx)) {
-            throw new Error('Invalid index!');
+    getNodeAtIndex(indx) {
+        if (typeof index !== 'number') {
+            throw new Error(`The index parameter for the insert method must be number!`);
+        } else if (index < 0 || index >= this.count) {
+            throw new Error(`Invalid index: ${index} when inserting in doubly linked list!`);
         }
 
         let nodeToReturn = null;
 
-        for (let i = 0; i < this.length; i++) {
+        for (let i = 0; i < this.count; i++) {
             nodeToReturn = (i === 0) ? this.head : nodeToReturn.next;
 
             if (i === indx) {
@@ -131,31 +181,21 @@ class LinkedList {
 
         return nodeToReturn;
     }
-
-    validateIndex(indx) {
-        if (indx < 0 || indx >= this.length) {
-            return false;
-        }
-
-        return true;
-    }
-
-    get print() {
-        let node = this.head;
-
-        while (node) {
-            console.log(node.value);
-
-            node = node.next;
-        }
-    }
 }
 
-// const list = new LinkedList();
+const list = new LinkedList();
 
-// list.append([+'1', +'6', +'3', +'8', +'4', +'67', +'20']);
-// list.insert([+'2', [+'67']]);
 
-// console.log(list.indexOf(67));
+list.append([67, 12, 22, 1]);
+list.print;
 
-// list.print;
+console.log(list.head);
+console.log(list.tail);
+
+console.log('-'.repeat(10));
+
+list.reverse;
+list.print;
+
+console.log(list.head.value);
+console.log(list.tail.value);
