@@ -1,6 +1,6 @@
 const LinkedList = require('../linked-list/linked-list');
 
-class Queue {
+class Stack {
     constructor() {
         this.linkedList = new LinkedList();
     }
@@ -12,21 +12,20 @@ class Queue {
     get isEmpty() {
         return this.linkedList.length === 0;
     }
-
     get values() {
-        return function* (queue) {
-            while (!queue.isEmpty) {
-                yield queue.dequeue();
+        return function* (stack) {
+            while (!stack.isEmpty) {
+                yield stack.pop();
             }
         };
     }
 
-    enqueue(...value) {
-        this.linkedList.append(value);
+    push(...values) {
+        this.linkedList.prepend(values);
     }
 
-    dequeue() {
-        return this.linkedList.length ? this.linkedList.removeAt(0) : null;
+    pop() {
+        return this.linkedList.length > 0 ? this.linkedList.removeAt(0) : null;
     }
 
     print() {
@@ -36,8 +35,11 @@ class Queue {
     }
 }
 
-// const q = new Queue();
+module.exports = Stack;
 
-// q.enqueue(1, 2, 3, 4, 5, 8);
+// const s = new Stack();
+// s.push(1, 23, 4, 55, 6, 0, 7);
+// // console.log(s.length)
 
-// q.print();
+// s.print();
+// console.log(s.length)
