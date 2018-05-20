@@ -12,6 +12,7 @@ class Stack {
     get isEmpty() {
         return this.linkedList.length === 0;
     }
+
     get values() {
         return function* (stack) {
             while (!stack.isEmpty) {
