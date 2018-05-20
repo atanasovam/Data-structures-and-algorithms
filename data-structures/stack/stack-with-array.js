@@ -10,6 +10,7 @@ class Stack {
     get isEmpty() {
         return this.stack.length === 0;
     }
+
     get values() {
         return function* (stack) {
             while (!stack.isEmpty) {
