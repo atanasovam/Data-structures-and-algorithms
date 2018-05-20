@@ -134,8 +134,8 @@ class DoublyLinkedList {
         this._count += valuesList.length;
     }
 
-    indexOf(nodeVal) {
-        if (!nodeVal) {
+    indexOf(nodeValue) {
+        if (!nodeValue) {
             throw new Error('Invalid node value!')
         }
 
@@ -143,7 +143,7 @@ class DoublyLinkedList {
         let nodeCounter = 0;
 
         while (nodeToReturn !== null) {
-            if (nodeVal === nodeToReturn.value) {
+            if (nodeValue === nodeToReturn.value) {
                 break;
             }
 

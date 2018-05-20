@@ -141,8 +141,8 @@ class LinkedList {
         return deletedNode;
     }
 
-    indexOf(node) {
-        if (!nodeVal) {
+    indexOf(nodeValue) {
+        if (!nodeValue) {
             throw new Error('Invalid node value!')
         }
 
@@ -150,7 +150,7 @@ class LinkedList {
         let nodeCounter = 0;
 
         while (nodeToReturn !== null) {
-            if (node === nodeToReturn.value) {
+            if (nodeValue === nodeToReturn.value) {
                 break;
             }
 
@@ -179,19 +179,21 @@ class LinkedList {
     }
 }
 
-const list = new LinkedList();
+module.exports = LinkedList;
+
+// const list = new LinkedList();
 
 
-list.append([67, 12, 22, 1]);
-list.print();
+// list.append([67, 12, 22, 1]);
+// list.print();
 
-console.log(list._head);
-console.log(list._tail);
+// console.log(list._head);
+// console.log(list._tail);
 
-console.log('-'.repeat(10));
+// console.log('-'.repeat(10));
 
-list.reverse();
-list.print();
+// list.reverse();
+// list.print();
 
-console.log(list._head.value);
-console.log(list._tail.value);
+// console.log(list._head.value);
+// console.log(list._tail.value);
