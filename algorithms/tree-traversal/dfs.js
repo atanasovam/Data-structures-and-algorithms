@@ -15,9 +15,7 @@ const binaryTree = new BinaryTreeNode(
 );
  
 class DFS {
-    constructor(tree) {
-        this.tree = tree || null;
-    }
+    constructor() { }
 
     /**
      * Root, Left, Right
