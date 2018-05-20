@@ -36,6 +36,8 @@ class Queue {
     }
 }
 
+module.exports = Queue;
+
 // const q = new Queue();
 
 // q.enqueue(1, 2, 3, 4, 5, 8);
