@@ -37,4 +37,58 @@ class BFS {
     }
 }
 
-BFS.bfs(binaryTree);
+const firstNode = binaryTree;
+const secondNode = binaryTree.leftChild;
+
+const checkTreesIdentity = (firstNode, secondNode) => {
+    const firstQueue = new Queue();
+    firstQueue.enqueue(firstNode);
+
+    const secondQueue = new Queue();
+    secondQueue.enqueue(secondNode);
+
+
+    while (!(firstQueue.isEmpty || secondQueue.isEmpty)) {
+        const currentFirstNode = firstQueue.dequeue.value;
+        const currentSecondNode = secondQueue.dequeue.value;
+
+        if (currentFirstNode.value !== currentSecondNode.value) {
+            return false;
+        }
+
+        // First node
+        if (currentFirstNode.leftChild) {
+            firstQueue.enqueue(currentFirstNode.leftChild);
+        }
+
+        if (currentFirstNode.rightChild) {
+            firstQueue.enqueue(currentFirstNode.rightChild);
+        }
+
+        // Second node        
+        if (currentSecondNode.leftChild) {
+            secondQueue.enqueue(currentSecondNode.leftChild);
+        }
+
+        if (secondntSecondNode.rightChild) {
+            secondQueue.enqueue(currentSecondNode.rightChild);
+        }
+    }
+};
+
+const areTheSame = checkTreesIdentity(firstNode, secondNode);
+
+const areTreesIdentical = (rootA, rootB) => {
+
+    // equal bottom -> the same
+    if (!rootA && !rootB) {
+        return true;
+    }
+
+    if (rootA && rootB) {
+        return areTreesIdentical(rootA.left, rootB.left) && areTreesIdentical(rootA.right, rootB.right)
+    }
+
+    // not equal tree bottom -> not the same
+    return false;
+}
